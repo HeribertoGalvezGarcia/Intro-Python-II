@@ -3,10 +3,10 @@
 
 __all__ = ('Player',)
 
-from typing import Optional
-
 from room import Room
 
 
 class Player:
-    current_room: Optional[Room] = None
+    def __init__(self, name: str, room: Room) -> None:
+        self.name = name
+        self.current_room = room
