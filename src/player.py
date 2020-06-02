@@ -5,7 +5,7 @@ __all__ = ('Player',)
 
 from typing import Optional
 
-from .room import Room
+from room import Room
 
 
 class Player:
