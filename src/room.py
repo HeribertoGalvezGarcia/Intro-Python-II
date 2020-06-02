@@ -18,6 +18,9 @@ class Room:
         self.name = name
         self.surroundings = surroundings
 
+    def __str__(self):
+        return f'{self.name}'
+
     @property
     def directions(self) -> Dict[str, Room]:
         return {'n': self.n_to, 'e': self.e_to, 's': self.s_to, 'w': self.w_to}
