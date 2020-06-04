@@ -1,4 +1,5 @@
 import sys
+import textwrap
 
 from room import Room
 from player import Player
@@ -58,7 +59,8 @@ player = Player('John Doe', room['outside'])
 
 def main() -> None:
     while True:
-        print(f'Location: {player.current_room}\n\n{player.current_room.surroundings}')
+        desc = '\n'.join(textwrap.wrap(player.current_room.surroundings))
+        print(f'Location: {player.current_room}\n\n{desc}')
 
         while True:
             if (user_input := input('What will you do? ').lower()) not in ('n', 'e', 's', 'w', 'q'):
