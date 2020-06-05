@@ -16,10 +16,10 @@ class Room:
     s_to: Optional[Room] = None
     w_to: Optional[Room] = None
 
-    def __init__(self, name: str, surroundings: str, items: Sequence[Item]) -> None:
+    def __init__(self, name: str, surroundings: str, items: Sequence[Item] = None) -> None:
         self.name = name
         self.surroundings = surroundings
-        self.items = items
+        self.items = list(items) if items is not None else []
 
     def __str__(self):
         return f'{self.name}'
