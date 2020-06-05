@@ -1,10 +1,21 @@
+import sys
+import textwrap
+
 from room import Room
+from item import Item
+from player import Player
 
 # Declare all the rooms
 
+item = {
+    'torch': Item('Torch', 'Lights up a room.'),
+    'map': Item('Map', 'A map showing the layout of the area.')
+}
+
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons",
+                     (item['torch'], item['map'])),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
@@ -39,6 +50,8 @@ room['treasure'].s_to = room['narrow']
 
 # Make a new player object that is currently in the 'outside' room.
 
+player = Player('John Doe', room['outside'])
+
 # Write a loop that:
 #
 # * Prints the current room name
@@ -49,3 +62,51 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+
+def main() -> None:
+    while True:
+        desc = '\n'.join(textwrap.wrap(player.current_room.surroundings))
+        items = ', '.join(map(str, player.current_room.items))
+        print(f'Location: {player.current_room}\n\n{desc}\nItems: {items or None}')
+
+        while True:
+            if (user_input := input('What will you do? ').lower()) not in ('n', 'e', 's', 'w', 'q'):
+                if len((split_input := user_input.split())) == 2 and split_input[0] in ('drop', 'take'):
+                    itm = split_input[1]
+                    if itm not in item:
+                        print('Invalid item given.')
+                        continue
+
+                    itm = item[itm]
+
+                    dropped = split_input[0] == 'drop'
+                    method = player.drop if dropped else player.pickup
+                    try:
+                        method(itm)
+                    except ValueError as e:
+                        print(e)
+                        continue
+
+                    print(f'{split_input[0].title()}{"ped" if dropped else "n"} {itm}.')
+                    break
+
+                print('Invalid option given.')
+                continue
+
+            if user_input == 'q':
+                print('Exiting')
+                sys.exit(0)
+
+            try:
+                player.move(user_input)
+            except ValueError as e:
+                print(e)
+                continue
+
+            print(f'\nMoved to {player.current_room}\n')
+            break
+
+
+if __name__ == '__main__':
+    main()
