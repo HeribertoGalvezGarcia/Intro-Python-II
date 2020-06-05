@@ -71,12 +71,13 @@ def main() -> None:
                 print('Exiting')
                 sys.exit(0)
 
-            if (location := player.current_room.directions[user_input]) is None:
-                print('Invalid direction given.')
+            try:
+                player.move(user_input)
+            except ValueError as e:
+                print(e)
                 continue
 
-            player.current_room = location
-            print(f'\nMoved to {location}\n')
+            print(f'\nMoved to {player.current_room}\n')
             break
 
 
