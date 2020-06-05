@@ -60,7 +60,8 @@ player = Player('John Doe', room['outside'])
 def main() -> None:
     while True:
         desc = '\n'.join(textwrap.wrap(player.current_room.surroundings))
-        print(f'Location: {player.current_room}\n\n{desc}')
+        items = '\n'.join(player.current_room.items)
+        print(f'Location: {player.current_room}\n\n{desc}\nItems: {items or None}')
 
         while True:
             if (user_input := input('What will you do? ').lower()) not in ('n', 'e', 's', 'w', 'q'):
